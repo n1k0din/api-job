@@ -1,13 +1,13 @@
 from pprint import pprint
 
-from head_hunter_parser import HeadHunterParser
+from headhunter_parser import HeadHunterParser
 from language_stats import LanguageStats
 
 
 def main():
     user_area = 'Москва'
 
-    hh_parser = HeadHunterParser('https://api.hh.ru')
+    hh_parser = HeadHunterParser('https://api.hh.ru', max_results=200)
 
     top_languages = (
         'JavaScript',
