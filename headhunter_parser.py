@@ -2,14 +2,17 @@ from itertools import count
 
 import requests
 
+from predict_salary import predict_salary
+
 
 class HeadHunterParser:
     AREA_MAPPING = {
         'Москва': 1,
     }
 
-    def __init__(self, api_url, per_page=20, max_results=2000):
+    def __init__(self, api_url, rub_currency='RUR', per_page=20, max_results=2000):
         self.api_url = api_url
+        self.rub_currency = rub_currency
         self.per_page = per_page
         self.max_results = max_results
 
@@ -39,6 +42,14 @@ class HeadHunterParser:
                 break
 
         return page_data['found'], vacancies
+
+    def predict_rub_salary(self, hh_vacancy):
+        salary = hh_vacancy['salary']
+
+        if not salary or salary['currency'] != self.rub_currency:
+            return None
+
+        return predict_salary(salary['from'], salary['to'])
 
 
 if __name__ == '__main__':

@@ -1,6 +1,3 @@
-from head_hunter_vacancy import HeadHunterVacancy
-
-
 class LanguageStats:
     search_text_template = 'программист {}'
 
@@ -25,8 +22,7 @@ class LanguageStats:
 
         predicted_salaries = []
         for vacancy in vacancies:
-            hh_vacancy = HeadHunterVacancy(vacancy)
-            predicted_salary = hh_vacancy.predict_rub_salary()
+            predicted_salary = self.parser.predict_rub_salary(vacancy)
             if predicted_salary:
                 predicted_salaries.append(int(predicted_salary))
 
