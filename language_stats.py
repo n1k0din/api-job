@@ -14,11 +14,11 @@ class LanguageStats:
 
     def get_all_vacancies(self):
         search_text = LanguageStats.search_text_template.format(self.language)
-        vacancies = self.parser.get_vacancies(search_text, self.area)
+        vacancies_found, vacancies = self.parser.get_vacancies(search_text, self.area)
 
-        self.vacancies_found = vacancies['found']
+        self.vacancies_found = vacancies_found
 
-        return vacancies['items']
+        return vacancies
 
     def calc_language_stats(self):
         vacancies = self.get_all_vacancies()
