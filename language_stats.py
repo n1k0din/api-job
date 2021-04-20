@@ -4,21 +4,27 @@ from head_hunter_vacancy import HeadHunterVacancy
 class LanguageStats:
     search_text_template = 'программист {}'
 
-    def __init__(self, language, area):
+    def __init__(self, language, area, parser):
         self.language = language
         self.area = area
+        self.parser = parser
         self.vacancies_found = 0
         self.vacancies_processed = 0
         self.average_salary = 0
 
-    def calc_language_stats(self, hh_parser):
+    def get_all_vacancies(self):
         search_text = LanguageStats.search_text_template.format(self.language)
-        vacancies = hh_parser.get_vacancies(search_text, self.area)
+        vacancies = self.parser.get_vacancies(search_text, self.area)
 
         self.vacancies_found = vacancies['found']
 
+        return vacancies['items']
+
+    def calc_language_stats(self):
+        vacancies = self.get_all_vacancies()
+
         predicted_salaries = []
-        for vacancy in vacancies['items']:
+        for vacancy in vacancies:
             hh_vacancy = HeadHunterVacancy(vacancy)
             predicted_salary = hh_vacancy.predict_rub_salary()
             if predicted_salary:

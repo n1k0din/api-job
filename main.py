@@ -24,8 +24,8 @@ def main():
 
     top_languages_stats = {}
     for language in top_languages:
-        language_stats = LanguageStats(language, user_area)
-        language_stats.calc_language_stats(hh_parser)
+        language_stats = LanguageStats(language, user_area, hh_parser)
+        language_stats.calc_language_stats()
         top_languages_stats |= language_stats.build_stats_dict()
 
     pprint(top_languages_stats)
