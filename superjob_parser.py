@@ -55,7 +55,3 @@ class SuperjobParser:
             return None
 
         return predict_salary(payment_from, payment_to)
-
-
-if __name__ == '__main__':
-    pass

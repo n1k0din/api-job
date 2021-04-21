@@ -50,7 +50,3 @@ class HeadHunterParser:
             return None
 
         return predict_salary(salary['from'], salary['to'])
-
-
-if __name__ == '__main__':
-    pass
