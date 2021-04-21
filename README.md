@@ -59,7 +59,7 @@
     ```bash
     pip install -r requirements.txt
     ```
-5. Зарегистрируйтесь на https://api.superjob.ru/ и поместите токен в файл .env в виде  
+5. Зарегистрируйтесь на https://api.superjob.ru/ и поместите токен в файл .env в виде: 
     ```
     SJ_KEY=ваш_ключ
     ```
