@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 
 from dotenv import load_dotenv
 from terminaltables import AsciiTable
@@ -55,14 +56,19 @@ def main():
         'Ruby',
     )
 
-    hh_top_languages_stats = {}
-    sj_top_languages_stats = {}
-    for language in top_languages:
-        hh_top_languages_stats |= get_lang_stats(language, user_area, hh_parser)
-        sj_top_languages_stats |= get_lang_stats(language, user_area, sj_parser)
+    parsers = {
+        'HeadHunter Moscow': hh_parser,
+        'Superjob Moscow': sj_parser,
+    }
 
-    print_lang_stats('HeadHunter Moscow', hh_top_languages_stats)
-    print_lang_stats('Superjob Moscow', sj_top_languages_stats)
+    language_stats = defaultdict(dict)
+
+    for language in top_languages:
+        for title, parser in parsers.items():
+            language_stats[title] |= get_lang_stats(language, user_area, parser)
+
+    for title, language_stat in language_stats.items():
+        print_lang_stats(title, language_stat)
 
 
 if __name__ == '__main__':
