@@ -1,8 +1,4 @@
 # Собирает статистику по вакансиям программистов на HeadHunter и Superjob
-- `headhunter_parser.py` содержит парсер HeadHunter
-- `superjob_parser.py` содержит парсер Superjob
-- `language_stats.py` вычисляет статистику для нужного языка
-- `predict_salary.py` вспомогательная функция по оценке средней зп по неполным данным
 - `main.py` создает парсеры, запускает вычисления, выводит таблицы
 
 ## Пример
@@ -59,7 +55,7 @@
     ```bash
     pip install -r requirements.txt
     ```
-5. Зарегистрируйтесь на https://api.superjob.ru/ и поместите токен в файл .env в виде: 
+5. Зарегистрируйтесь на https://api.superjob.ru/ и поместите токен в файл .env в виде:
     ```
     SJ_KEY=ваш_ключ
     ```
