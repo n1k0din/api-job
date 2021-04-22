@@ -193,8 +193,7 @@ def main():
         for language in top_languages:
             vacancies = params['vacancies_getter'](
                 language,
-                area_id=params['area_id'],
-                max_results=60
+                area_id=params['area_id'],                
             )
             lang_stats[job_portal][language] = calc_language_stats(vacancies, params['predictor'])
         print(build_lang_stats_table(job_portal, lang_stats[job_portal]))
