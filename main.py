@@ -1,5 +1,4 @@
 import os
-from collections import defaultdict
 from functools import partial
 from itertools import count
 
@@ -173,30 +172,18 @@ def main():
         'Ruby',
     )
 
-    lang_stats = defaultdict(dict)
+    hh_stats = {}
+    sj_stats = {}
 
-    job_portal_parameters = {
-        'HeadHunter Moscow': {
-            'predictor': predict_hh_rub_salary,
-            'vacancies_getter': get_hh_language_vacancies,
-            'area_id': HH_MOSCOW_ID,
-        },
-        'SuperJob Moscow': {
-            'predictor': predict_sj_rub_salary,
-            'vacancies_getter': partial(get_sj_language_vacancies, api_key=sj_api_key),
-            'area_id': SJ_MOSCOW_ID,
-        },
+    for language in top_languages:
+        hh_vacancies = get_hh_language_vacancies(language, HH_MOSCOW_ID)
+        hh_stats[language] = calc_language_stats(hh_vacancies, predict_hh_rub_salary)
 
-    }
+        sj_vacancies = get_sj_language_vacancies(language, SJ_MOSCOW_ID, sj_api_key)
+        sj_stats[language] = calc_language_stats(sj_vacancies, predict_sj_rub_salary)
 
-    for job_portal, params in job_portal_parameters.items():
-        for language in top_languages:
-            vacancies = params['vacancies_getter'](
-                language,
-                area_id=params['area_id'],                
-            )
-            lang_stats[job_portal][language] = calc_language_stats(vacancies, params['predictor'])
-        print(build_lang_stats_table(job_portal, lang_stats[job_portal]))
+    print(build_lang_stats_table('HeadHunter Moscow', hh_stats))
+    print(build_lang_stats_table('SuperJob Moscow', sj_stats))
 
 
 if __name__ == '__main__':
