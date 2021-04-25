@@ -43,7 +43,7 @@ def get_hh_language_vacancies(
                 or page * per_page >= max_results - per_page:
             break
 
-    return {'total': page_data['found'], 'items': vacancies}
+    return page_data['found'], vacancies
 
 
 def get_sj_language_vacancies(
@@ -81,7 +81,7 @@ def get_sj_language_vacancies(
                 or page * per_page >= max_results - per_page:
             break
 
-    return {'total': page_data['total'], 'items': vacancies}
+    return page_data['total'], vacancies
 
 
 def predict_hh_rub_salary(hh_vacancy, rub_currency='RUR'):
@@ -103,9 +103,9 @@ def predict_sj_rub_salary(sj_vacancy, rub_currency='rub'):
     return predict_salary(payment_from, payment_to)
 
 
-def calc_language_stats(vacancies, salary_predictor):
+def calc_language_stats(total_vacancies, vacancies, salary_predictor):
     predicted_salaries = []
-    for vacancy in vacancies['items']:
+    for vacancy in vacancies:
         predicted_salary = salary_predictor(vacancy)
         if predicted_salary:
             predicted_salaries.append(int(predicted_salary))
@@ -117,7 +117,7 @@ def calc_language_stats(vacancies, salary_predictor):
     )
 
     return {
-        'vacancies_found': vacancies['total'],
+        'vacancies_found': total_vacancies,
         'vacancies_processed': vacancies_processed,
         'average_salary': average_salary,
     }
@@ -173,11 +173,19 @@ def main():
     sj_stats = {}
 
     for language in top_languages:
-        hh_vacancies = get_hh_language_vacancies(language, HH_MOSCOW_ID)
-        hh_stats[language] = calc_language_stats(hh_vacancies, predict_hh_rub_salary)
+        total_hh_vacancies, hh_vacancies = get_hh_language_vacancies(language, HH_MOSCOW_ID)
+        hh_stats[language] = calc_language_stats(
+            total_hh_vacancies,
+            hh_vacancies,
+            predict_hh_rub_salary,
+        )
 
-        sj_vacancies = get_sj_language_vacancies(language, SJ_MOSCOW_ID, sj_api_key)
-        sj_stats[language] = calc_language_stats(sj_vacancies, predict_sj_rub_salary)
+        total_sj_vacancies, sj_vacancies = get_sj_language_vacancies(language, SJ_MOSCOW_ID, sj_api_key)
+        sj_stats[language] = calc_language_stats(
+            total_sj_vacancies,
+            sj_vacancies,
+            predict_sj_rub_salary,
+        )
 
     print(build_lang_stats_table('HeadHunter Moscow', hh_stats))
     print(build_lang_stats_table('SuperJob Moscow', sj_stats))
