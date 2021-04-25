@@ -25,7 +25,6 @@ def get_hh_language_vacancies(
     params = {
         'text': search_text,
         'area': area_id,
-        'page': 0,
         'per_page': per_page,
     }
 
@@ -62,7 +61,6 @@ def get_sj_language_vacancies(
         'keyword': search_text,
         'town': area_id,
         'catalogues[]': SJ_SOFTWARE_DEVELOP_SECTION_ID,
-        'page': 0,
         'count': per_page,
     }
 
